@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+select the file to display:
+<input type="file" onchange="readfile(this.files[0])"/>
+<pre id="output"></pre>
+<input type="file" onchange="typefile(this.files[0])"/>
+
+<script>
+    //使用FileReader读取文本文件
+    function readfile(f) {
+        var reader = new FileReader();
+        reader.readAsText(f);
+        reader.onload = function () {
+            var text = reader.result;
+            var out = document.getElementById('output');
+            out.appendChild(document.createTextNode(text));
+        }
+        reader.onerror = function (ev) {
+            console.log('error',ev);
+        }
+    }
+    //读取文件的前4个字节
+    function typefile(file) {
+        var slice = file.slice(0,4);
+        console.log(slice)
+        var reader = new FileReader();
+        reader.readAsArrayBuffer(slice);
+        reader.onload = function (ev) {
+            var buffer = reader.result;//二进制？
+            var view = new DataView(buffer);//转化？
+            var magic = view.getUint32(0,false);//转为32位
+            switch(magic){
+                case 0x89504E47:file.verified_type = 'image/png';break;
+                case 0x47494638:file.verified_type = 'image/gif';break;
+                case 0x25504446:file.verified_type = 'application/pdf';break;
+                case 0x504b0304:file.verified_type = 'application/zip';break;
+            }
+            console.log(file.name,file.verified_type);
+        };
+    }
+</script>
+</body>
+</html>
