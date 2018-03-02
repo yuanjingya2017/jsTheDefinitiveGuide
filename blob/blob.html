@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    ＜style＞/*给文件拖放目标区域定义简单的样式*/
+    #droptarget{border:solid black 2px;width:200px;height:200px;}
+    #droptarget.active{border:solid red 4px;}
+    ＜/style＞
+</head>
+<body>
+＜div id="droptarget"＞Drop Image Files Here＜/div＞
+<input type="file" accept="image/*" multiple onchange="fileinfo(this.files)"/>
+
+<script src="blob.js"></script>
+</body>
+</html>
